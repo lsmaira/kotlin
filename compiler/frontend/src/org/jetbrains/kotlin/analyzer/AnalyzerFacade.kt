@@ -326,7 +326,9 @@ class LazyModuleDependencies<M : ModuleInfo>(
                 yield(moduleDescriptor.builtIns.builtInsModule)
             }
             for (dependency in module.dependencies()) {
-                yield(resolverForProject.descriptorForModule(dependency as M))
+                if (firstDependency != dependency) {
+                    yield(resolverForProject.descriptorForModule(dependency as M))
+                }
             }
             if (module.dependencyOnBuiltIns() == ModuleInfo.DependencyOnBuiltIns.LAST) {
                 yield(moduleDescriptor.builtIns.builtInsModule)
