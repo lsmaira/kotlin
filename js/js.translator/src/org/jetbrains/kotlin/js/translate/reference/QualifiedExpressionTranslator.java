@@ -81,7 +81,7 @@ public final class QualifiedExpressionTranslator {
             return VariableAccessTranslator.newInstance(context, (KtSimpleNameExpression)selector, receiver).translateAsGet();
         }
         if (selector instanceof KtCallExpression) {
-            return invokeCallExpressionTranslator(receiver, selector, context);
+            return invokeCallExpressionTranslator(receiver, (KtCallExpression) selector, context);
         }
         //TODO: never get there
         if (selector instanceof KtSimpleNameExpression) {
@@ -93,11 +93,11 @@ public final class QualifiedExpressionTranslator {
     @NotNull
     static JsNode invokeCallExpressionTranslator(
             @Nullable JsExpression receiver,
-            @NotNull KtExpression selector,
+            @NotNull KtCallExpression selector,
             @NotNull TranslationContext context
     ) {
         try {
-            return CallExpressionTranslator.translate((KtCallExpression) selector, receiver, context);
+            return CallExpressionTranslator.translate(selector, receiver, context);
         } catch (RuntimeException e) {
             throw  ErrorReportingUtils.reportErrorWithLocation(selector, e);
         }
