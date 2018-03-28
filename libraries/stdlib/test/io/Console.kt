@@ -35,6 +35,14 @@ class ConsoleTest {
     }
 
     @Test
+    fun trailingEmptyLineIsIgnored() {
+        testReadLine(linuxLineSeparator, listOf(""))
+        testReadLine(windowsLineSeparator, listOf(""))
+        testReadLine("a$linuxLineSeparator", listOf("a"))
+        testReadLine("a$windowsLineSeparator", listOf("a"))
+    }
+
+    @Test
     fun shouldReadOneLine() {
         testReadLine("first", listOf("first"))
     }
@@ -47,6 +55,9 @@ class ConsoleTest {
     @Test
     fun shouldReadConsecutiveEmptyLines() {
         testReadLine("$linuxLineSeparator$linuxLineSeparator", listOf("", ""))
+        testReadLine("$linuxLineSeparator$windowsLineSeparator", listOf("", ""))
+        testReadLine("$windowsLineSeparator$linuxLineSeparator", listOf("", ""))
+        testReadLine("$windowsLineSeparator$windowsLineSeparator", listOf("", ""))
     }
 
     @Test
@@ -62,6 +73,9 @@ class ConsoleTest {
     private fun testReadLine(text: String, expected: List<String>, charset: Charset = Charsets.UTF_8) {
         val actual = readLines(text, charset)
         assertEquals(expected, actual)
+        val referenceExpected = readLinesReference(text, charset)
+        assertEquals(referenceExpected, actual, "Comparing to reference readLine")
+
     }
 
     private fun readLines(text: String, charset: Charset): List<String> {
@@ -70,6 +84,12 @@ class ConsoleTest {
             return generateSequence { readLine(stream, decoder) }.toList().also {
                 assertTrue("All bytes should be read") { stream.read() == -1 }
             }
+        }
+    }
+
+    private fun readLinesReference(text: String, charset: Charset): List<String> {
+        text.byteInputStream(charset).bufferedReader(charset).use { reader ->
+            return generateSequence { reader.readLine() }.toList()
         }
     }
 }
