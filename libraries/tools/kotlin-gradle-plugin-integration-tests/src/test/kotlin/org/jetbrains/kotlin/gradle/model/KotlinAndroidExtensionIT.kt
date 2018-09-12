@@ -34,6 +34,18 @@ class KotlinAndroidExtensionIT : BaseGradleIT() {
     }
 
     @Test
+    fun testAndroid() {
+        val project = Project("AndroidExtensionsProject")
+        val androidModel = project.getModels(KotlinProject::class.java).getModel(":app")!!
+        println(androidModel)
+
+//        assertEquals(1L, androidExtensionModel.modelVersion)
+//        assertEquals("app", androidExtensionModel.name)
+//        assertFalse(androidExtensionModel.isExperimental)
+//        assertEquals("hashMap", androidExtensionModel.defaultCacheImplementation)
+    }
+
+    @Test
     fun testAndroidExtensionsManyVariants() {
         val project = Project("AndroidExtensionsManyVariants")
         val androidExtensionModel = project.getModels(KotlinAndroidExtension::class.java).getModel(":app")!!

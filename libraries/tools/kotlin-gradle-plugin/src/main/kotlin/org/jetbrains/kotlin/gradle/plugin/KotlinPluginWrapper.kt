@@ -115,7 +115,7 @@ open class KotlinAndroidPluginWrapper @Inject constructor(
     protected val registry: ToolingModelBuilderRegistry
 ): KotlinBasePluginWrapper(fileResolver) {
     override fun getPlugin(project: Project, kotlinGradleBuildServices: KotlinGradleBuildServices): Plugin<Project> =
-        KotlinAndroidPlugin(kotlinPluginVersion)
+        KotlinAndroidPlugin(kotlinPluginVersion, registry)
 }
 
 open class Kotlin2JsPluginWrapper @Inject constructor(

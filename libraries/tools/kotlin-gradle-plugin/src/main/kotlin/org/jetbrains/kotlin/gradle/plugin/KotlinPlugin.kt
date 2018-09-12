@@ -544,7 +544,8 @@ internal open class Kotlin2JsPlugin(
 }
 
 internal open class KotlinAndroidPlugin(
-    private val kotlinPluginVersion: String
+    private val kotlinPluginVersion: String,
+    private val registry: ToolingModelBuilderRegistry
 ) : Plugin<Project> {
 
     override fun apply(project: Project) {
@@ -555,6 +556,7 @@ internal open class KotlinAndroidPlugin(
             project, androidTarget, tasksProvider,
             kotlinPluginVersion
         )
+        registry.register(KotlinModelBuilder(kotlinPluginVersion))
     }
 
     companion object {
